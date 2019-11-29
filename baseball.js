@@ -3,21 +3,30 @@ const status = {
   B: 0,
   O: 0,
   H: 0,
+  isBatterOut: false,
   toString: function() {
     console.log(this.S + "S " + this.B + "B " + this.O + "O");
+  },
+  addOutCount: function() {
+    this.O++;
+    this.isBatterOut = true;
+  },
+  addHitCount: function() {
+    this.H++;
+    this.isBatterOut = true;
   }
 };
 
 const checkStatus = function() {
   if (status.S === 3) {
     status.S = 0;
-    status.O++;
+    status.addOutCount();
   }
   if (status.B === 4) {
     status.B = 0;
-    status.H++;
+    status.addHitCount();
   }
-}
+};
 
 const updateStatus = function(random) {
   if (random === 0) {
@@ -25,9 +34,9 @@ const updateStatus = function(random) {
   } else if (random === 1) {
     status.B++;
   } else if (random === 2) {
-    status.H++;
+    status.addHitCount();
   } else if (random === 3) {
-    status.O++;
+    status.addOutCount();
   }
   checkStatus();
 };
