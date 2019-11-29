@@ -8,6 +8,13 @@ const status = {
   }
 };
 
+const checkStatus = function() {
+  if (status.S === 3) {
+    status.S = 0;
+    status.O++;
+  }
+}
+
 const updateStatus = function(random) {
   if (random === 0) {
     status.S++;
@@ -18,6 +25,7 @@ const updateStatus = function(random) {
   } else if (random === 3) {
     status.O++;
   }
+  checkStatus();
 };
 
 const randomResult = function() {
