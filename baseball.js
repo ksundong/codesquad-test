@@ -1,5 +1,11 @@
+const randomResult = function() {
+  const results = ["스트라이크", "볼", "안타", "아웃"];
+  const result = results[Math.floor(Math.random() * results.length)];
+  console.log(result + "!");
+};
+
 const playgame = function() {
-  // code
+  randomResult();
 };
 
 const start = function() {
