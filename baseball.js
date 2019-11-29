@@ -18,6 +18,8 @@ const status = {
   changeBatter: function() {
     if (this.isBatterOut) {
       this.isBatterOut = false;
+      this.S = 0;
+      this.B = 0;
       return " 다음 타자가 타석에 입장했습니다.";
     }
     return "";
