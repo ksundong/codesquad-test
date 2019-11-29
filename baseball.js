@@ -16,6 +16,12 @@ const status = {
     this.isBatterOut = true;
   },
   changeBatter: function() {
+    if (this.O === 3) {
+      this.isBatterOut = false;
+      this.S = 0;
+      this.B = 0;
+      return "";
+    }
     if (this.isBatterOut) {
       this.isBatterOut = false;
       this.S = 0;
@@ -23,6 +29,9 @@ const status = {
       return " 다음 타자가 타석에 입장했습니다.";
     }
     return "";
+  },
+  gameOver: function() {
+    console.log("최종 안타수: " + this.H + "\nGAME OVER");
   }
 };
 
@@ -61,7 +70,10 @@ const randomResult = function() {
 };
 
 const playgame = function() {
-  randomResult();
+  while (status.O !== 3) {
+    randomResult();
+  }
+  status.gameOver();
 };
 
 const start = function() {
