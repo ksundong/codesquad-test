@@ -8,10 +8,24 @@ const status = {
   }
 };
 
+const updateStatus = function(random) {
+  if (random === 0) {
+    status.S++;
+  } else if (random === 1) {
+    status.B++;
+  } else if (random === 2) {
+    status.H++;
+  } else if (random === 3) {
+    status.O++;
+  }
+};
+
 const randomResult = function() {
   const results = ["스트라이크", "볼", "안타", "아웃"];
   const random = Math.floor(Math.random() * results.length);
+  updateStatus(random);
   console.log(results[random] + "!");
+  console.log(status.toString());
 };
 
 const playgame = function() {
