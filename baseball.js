@@ -1,7 +1,17 @@
+const status = {
+  S: 0,
+  B: 0,
+  O: 0,
+  H: 0,
+  toString: function() {
+    console.log(this.S + "S " + this.B + "B " + this.O + "O");
+  }
+};
+
 const randomResult = function() {
   const results = ["스트라이크", "볼", "안타", "아웃"];
-  const result = results[Math.floor(Math.random() * results.length)];
-  console.log(result + "!");
+  const random = Math.floor(Math.random() * results.length);
+  console.log(results[random] + "!");
 };
 
 const playgame = function() {
