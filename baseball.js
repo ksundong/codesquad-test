@@ -14,6 +14,13 @@ const status = {
   addHitCount: function() {
     this.H++;
     this.isBatterOut = true;
+  },
+  changeBatter: function() {
+    if (this.isBatterOut) {
+      this.isBatterOut = false;
+      return " 다음 타자가 타석에 입장했습니다.";
+    }
+    return "";
   }
 };
 
@@ -21,14 +28,16 @@ const checkStatus = function() {
   if (status.S === 3) {
     status.S = 0;
     status.addOutCount();
+    console.log("아웃!" + status.changeBatter());
   }
   if (status.B === 4) {
     status.B = 0;
     status.addHitCount();
+    console.log("안타!" + status.changeBatter());
   }
 };
 
-const updateStatus = function(random) {
+const updateStatus = function(results, random) {
   if (random === 0) {
     status.S++;
   } else if (random === 1) {
@@ -38,14 +47,14 @@ const updateStatus = function(random) {
   } else if (random === 3) {
     status.addOutCount();
   }
-  checkStatus();
+  console.log(results[random] + "!" + status.changeBatter());
 };
 
 const randomResult = function() {
   const results = ["스트라이크", "볼", "안타", "아웃"];
   const random = Math.floor(Math.random() * results.length);
-  updateStatus(random);
-  console.log(results[random] + "!");
+  updateStatus(results, random);
+  checkStatus();
   console.log(status.toString());
 };
 
