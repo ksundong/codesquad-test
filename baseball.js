@@ -13,6 +13,10 @@ const checkStatus = function() {
     status.S = 0;
     status.O++;
   }
+  if (status.B === 4) {
+    status.B = 0;
+    status.H++;
+  }
 }
 
 const updateStatus = function(random) {
