@@ -1,84 +1,70 @@
-const status = {
-  S: 0,
-  B: 0,
-  O: 0,
-  H: 0,
-  isBatterOut: false,
-  toString: function() {
-    console.log(this.S + "S " + this.B + "B " + this.O + "O");
+const game = {
+  STRIKE: "strike",
+  BALL: "ball",
+  OUT: "out",
+  HIT: "hit",
+  get actions() {
+    return [this.STRIKE, this.BALL, this.OUT, this.HIT];
   },
-  addOutCount: function() {
-    this.O++;
-    this.isBatterOut = true;
+  strikes: 0,
+  balls: 0,
+  outs: 0,
+  hits: 0,
+  play: function() {
+    const random = Math.floor(Math.random() * this.actions.length);
+    this.update(this.actions[random]);
+    this.log();
   },
-  addHitCount: function() {
-    this.H++;
-    this.isBatterOut = true;
+  update: function(action) {
+    switch (action) {
+      case this.STRIKE:
+        return this.handleStrike();
+      case this.BALL:
+        return this.handleBall();
+      case this.OUT:
+        return this.handleOut();
+      case this.HIT:
+        return this.handleHit();
+    }
+  },
+  log: function() {
+    console.log(this.strikes + "S " + this.balls + "B " + this.outs + "O\n");
+  },
+  over: function() {
+    console.log("최종 안타수: " + this.hits + "\nGAME OVER");
+  },
+  handleStrike: function() {
+    console.log("스트라이크!");
+    this.strikes++;
+    if (this.strikes === 3) this.update("out");
+  },
+  handleBall: function() {
+    console.log("볼!");
+    this.balls++;
+    if (this.balls === 4) this.update("hit");
+  },
+  handleOut: function() {
+    console.log("아웃! 다음 타자가 타석에 입장했습니다.");
+    this.changeBatter();
+    this.outs++;
+  },
+  handleHit: function() {
+    console.log("안타! 다음 타자가 타석에 입장했습니다.");
+    this.changeBatter();
+    this.hits++;
   },
   changeBatter: function() {
-    if (this.O === 3) {
-      this.isBatterOut = false;
-      this.S = 0;
-      this.B = 0;
-      return "";
-    }
-    if (this.isBatterOut) {
-      this.isBatterOut = false;
-      this.S = 0;
-      this.B = 0;
-      return " 다음 타자가 타석에 입장했습니다.";
-    }
-    return "";
-  },
-  gameOver: function() {
-    console.log("최종 안타수: " + this.H + "\nGAME OVER");
+    this.strikes = 0;
+    this.balls = 0;
   }
 };
 
-const checkStatus = function() {
-  if (status.S === 3) {
-    status.S = 0;
-    status.addOutCount();
-    console.log("아웃!" + status.changeBatter());
-  }
-  if (status.B === 4) {
-    status.B = 0;
-    status.addHitCount();
-    console.log("안타!" + status.changeBatter());
-  }
-};
-
-const updateStatus = function(results, random) {
-  if (random === 0) {
-    status.S++;
-  } else if (random === 1) {
-    status.B++;
-  } else if (random === 2) {
-    status.addHitCount();
-  } else if (random === 3) {
-    status.addOutCount();
-  }
-  console.log(results[random] + "!" + status.changeBatter());
-};
-
-const randomResult = function() {
-  const results = ["스트라이크", "볼", "안타", "아웃"];
-  const random = Math.floor(Math.random() * results.length);
-  updateStatus(results, random);
-  checkStatus();
-  status.toString();
-};
-
-const playgame = function() {
-  while (status.O !== 3) {
-    randomResult();
-  }
-  status.gameOver();
-};
-
-const start = function() {
+const main = function() {
   console.log("신나는 야구 게임!\n첫 번째 타자가 타석에 입장했습니다.\n");
-  playgame();
+  while (game.outs < 3) {
+    game.play();
+  }
+  game.over();
 };
 
-start();
+main();

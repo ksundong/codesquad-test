@@ -42,7 +42,25 @@
 
 리팩토링.
 
-1. 중첩된 console.log문 제거<br>
+1. 중첩된 console.log문 제거
+
+2. status의 속성인 S, B, O, H를 일반적인 변수명 규칙에 맞도록 수정하였습니다.
+
+3. 상태를 업데이트 하는 updateStatus와 checkStatus를 하나의 기능으로 합쳤습니다.<br>
+   switch case문을 이용한 재귀를 이용하여 합쳤습니다.<br>
+   각각의 기능을 메소드로 만들어서 간단하게 만들었습니다.<br>
+   changeBatter가 카운트를 초기화하는 역할을 하도록 수정하였습니다.<br>
+
+4. playgame이라는 함수를 status의 메소드로 수정하였습니다.
+
+5. status라는 변수명이 직관적이지 않아서 game으로 바꾸었습니다.<br>
+   내부 메소드 명칭도 playGame에서 play로, gameOver에서 over로 변경하였습니다.
+
+6. log를 남기는 toString 메소드를 log라는 명칭으로 바꾸었습니다.
+
+7. start 함수를 main으로 바꾸었습니다.
+
+8. 객체 내부의 순서를 main함수에서 호출하는 순서대로 보기좋게 하기위해 수정하였습니다.
 
 ## Step 2
 
