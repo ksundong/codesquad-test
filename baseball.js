@@ -66,7 +66,7 @@ const randomResult = function() {
   const random = Math.floor(Math.random() * results.length);
   updateStatus(results, random);
   checkStatus();
-  console.log(status.toString());
+  status.toString();
 };
 
 const playgame = function() {
