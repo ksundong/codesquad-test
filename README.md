@@ -76,4 +76,19 @@
 3. 사용자의 입력을 받는 readline 모듈을 넣었고, selectMenu 메소드를 선언하였습니다<br>
    selectMenu 메소드는 입력값에 따라 데이터를 입력하는 enterData 메소드와 출력하는 printData 메소드로 분기되게 처리하였습니다.
 
+4. readline 모듈이 많은 indent를 필요로 하여 readline-sync로 변경하였습니다.<br>
+   이로 인해 gitignore 파일을 추가하였고 node_modules를 무시하도록 설정하였습니다.<br>
+   실행 전 `npm i` 를 꼭 입력해주어야 합니다.
+
+5. class의 위치를 전역으로 변경하였습니다.
+
+6. Team 클래스에 player를 담을 players 배열을 선언하였습니다.<br>
+   또, addPlayer 메소드를 추가하여 player를 입력받도록 하였습니다.
+
+7. game 객체 안에 firstTeam과 secondTeam을 선언해주었습니다.
+   이곳에 enterData 메소드를 통해 정보를 입력받도록 하였습니다.
+
+8. 무한루프를 사용하여 사용자의 입력을 계속 받을 수 있도록 하였습니다.<br>
+   이후 데이터 출력후에 루프가 종료되게 수정하도록 하겠습니다.
+
 ## Step 3

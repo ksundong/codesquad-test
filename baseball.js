@@ -1,24 +1,29 @@
+const readlineSync = require("readline-sync");
+
+class Player {
+  constructor(order, name, batAvg) {
+    this.order = order;
+    this.name = name;
+    this.batAvg = batAvg;
+  }
+}
+
+class Team {
+  constructor(teamName) {
+    this.teamName = teamName;
+    this.players = new Array(9);
+  }
+  addPlayer() {
+    for (let i = 0; i < this.players.length; i++) {
+      const info = readlineSync.question(i + 1 + "번 타자 정보 입력> ");
+      const name = info.split(",")[0].trim();
+      const batAvg = info.split(",")[1].trim();
+      const newPlayer = new Player(i + 1, name, batAvg);
+      this.players[i] = newPlayer;
+    }
+  }
+}
 const main = function() {
-  const readline = require("readline");
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
-
-  class Player {
-    constructor(order, name, batAvg) {
-      this.order = order;
-      this.name = name;
-      this.batAvg = batAvg;
-    }
-  }
-
-  class Team {
-    constructor(teamName) {
-      this.teamName = teamName;
-    }
-  }
-
   const game = {
     STRIKE: "strike",
     BALL: "ball",
@@ -31,13 +36,22 @@ const main = function() {
     balls: 0,
     outs: 0,
     hits: 0,
+    firstTeam: new Team(),
+    secondTeam: new Team(),
     selectMenu: function(input) {
       if (input === "1") this.enterData();
       else if (input === "2") this.printData();
       else console.log("올바른 값을 입력해주세요.");
-      rl.close();
     },
-    enterData: function() {},
+    enterData: function() {
+      const firstTeamName = readlineSync.question("1팀의 이름을 입력하세요> ");
+      this.firstTeam = new Team(firstTeamName);
+      this.firstTeam.addPlayer();
+      const secondTeamName = readlineSync.question("2팀의 이름을 입력하세요> ");
+      this.secondTeam = new Team(secondTeamName);
+      this.secondTeam.addPlayer();
+      console.log("\n팀 데이터 입력이 완료되었습니다.\n");
+    },
     printData: function() {},
     play: function() {
       const random = Math.floor(Math.random() * this.actions.length);
@@ -82,8 +96,10 @@ const main = function() {
     }
   };
 
-  console.log("신나는 야구시합\n1. 데이터 입력\n2. 데이터 출력\n");
-  rl.question("메뉴선택 (1 - 2) ", answer => game.selectMenu(answer));
+  while (true) {
+    console.log("신나는 야구시합\n1. 데이터 입력\n2. 데이터 출력\n");
+    game.selectMenu(readlineSync.question("메뉴선택 (1 - 2) "));
+  }
 
   // while (game.outs < 3) {
   //   game.play();
