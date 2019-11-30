@@ -85,7 +85,7 @@
 6. Team 클래스에 player를 담을 players 배열을 선언하였습니다.<br>
    또, addPlayer 메소드를 추가하여 player를 입력받도록 하였습니다.
 
-7. game 객체 안에 firstTeam과 secondTeam을 선언해주었습니다.
+7. game 객체 안에 firstTeam과 secondTeam을 선언해주었습니다.<br>
    이곳에 enterData 메소드를 통해 정보를 입력받도록 하였습니다.
 
 8. 무한루프를 사용하여 사용자의 입력을 계속 받을 수 있도록 하였습니다.<br>
@@ -93,5 +93,6 @@
 
 9. 저장된 데이터를 출력하는 printData 메소드를 추가하였습니다.<br>
    또, printData 메소드 수해 후 종료하도록 수정하였습니다.
+
 
 ## Step 3
