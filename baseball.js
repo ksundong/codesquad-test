@@ -16,15 +16,14 @@ const game = {
     this.log();
   },
   update: function(action) {
-    switch (action) {
-      case this.STRIKE:
-        return this.handleStrike();
-      case this.BALL:
-        return this.handleBall();
-      case this.OUT:
-        return this.handleOut();
-      case this.HIT:
-        return this.handleHit();
+    if (action === this.STRIKE) {
+      this.handleStrike();
+    } else if (action === this.BALL) {
+      this.handleBall();
+    } else if (action === this.OUT) {
+      this.handleOut();
+    } else if (action === this.HIT) {
+      this.handleHit();
     }
   },
   log: function() {
