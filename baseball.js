@@ -22,6 +22,13 @@ class Team {
       this.players[i] = newPlayer;
     }
   }
+  showInfo() {
+    console.log(this.teamName + " 팀 정보");
+    for (let i = 0; i < this.players.length; i++) {
+      const player = this.players[i];
+      console.log(player.order + "번 " + player.name + ", " + player.batAvg);
+    }
+  }
 }
 const main = function() {
   const game = {
@@ -52,7 +59,12 @@ const main = function() {
       this.secondTeam.addPlayer();
       console.log("\n팀 데이터 입력이 완료되었습니다.\n");
     },
-    printData: function() {},
+    printData: function() {
+      this.firstTeam.showInfo();
+      console.log();
+      this.secondTeam.showInfo();
+      process.exit();
+    },
     play: function() {
       const random = Math.floor(Math.random() * this.actions.length);
       this.update(this.actions[random]);
