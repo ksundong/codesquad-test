@@ -1,4 +1,18 @@
 const main = function() {
+  class Player {
+    constructor(order, name, batAvg) {
+      this.order = order;
+      this.name = name;
+      this.batAvg = batAvg;
+    }
+  }
+  
+  class Team {
+    constructor(teamName) {
+      this.teamName = teamName;
+    }
+  }
+
   const game = {
     STRIKE: "strike",
     BALL: "ball",
