@@ -1,4 +1,10 @@
 const main = function() {
+  const readline = require("readline");
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
   class Player {
     constructor(order, name, batAvg) {
       this.order = order;
@@ -6,7 +12,7 @@ const main = function() {
       this.batAvg = batAvg;
     }
   }
-  
+
   class Team {
     constructor(teamName) {
       this.teamName = teamName;
@@ -25,6 +31,14 @@ const main = function() {
     balls: 0,
     outs: 0,
     hits: 0,
+    selectMenu: function(input) {
+      if (input === "1") this.enterData();
+      else if (input === "2") this.printData();
+      else console.log("올바른 값을 입력해주세요.");
+      rl.close();
+    },
+    enterData: function() {},
+    printData: function() {},
     play: function() {
       const random = Math.floor(Math.random() * this.actions.length);
       this.update(this.actions[random]);
@@ -68,11 +82,13 @@ const main = function() {
     }
   };
 
-  console.log("신나는 야구 게임!\n첫 번째 타자가 타석에 입장했습니다.\n");
-  while (game.outs < 3) {
-    game.play();
-  }
-  game.over();
+  console.log("신나는 야구시합\n1. 데이터 입력\n2. 데이터 출력\n");
+  rl.question("메뉴선택 (1 - 2) ", answer => game.selectMenu(answer));
+
+  // while (game.outs < 3) {
+  //   game.play();
+  // }
+  // game.over();
 };
 
 main();
