@@ -13,13 +13,20 @@ class Team {
     this.teamName = teamName;
     this.players = new Array(9);
   }
-  addPlayer() {
-    for (let i = 0; i < this.players.length; i++) {
-      const info = readlineSync.question(i + 1 + "번 타자 정보 입력> ");
-      const name = info.split(",")[0].trim();
-      const batAvg = info.split(",")[1].trim();
-      const newPlayer = new Player(i + 1, name, batAvg);
-      this.players[i] = newPlayer;
+  addPlayers() {
+    for (var i = 0; i < this.players.length; i++) {
+      this.addPlayer(i);
+    }
+  }
+  addPlayer(i) {
+    const info = readlineSync.question(i + 1 + "번 타자 정보 입력> ");
+    const name = info.split(",")[0].trim();
+    const batAvgStr = info.split(",")[1].trim();
+    const batAvg = Number.parseFloat(batAvgStr);
+    if (batAvgStr.length === 5 && batAvg > 0.1 && batAvg < 0.5) {
+      this.players[i] = new Player(i + 1, name, batAvg);
+    } else {
+      console.log("잘못된 타율이 입력되었습니다.");
     }
   }
   showInfo() {
@@ -53,10 +60,10 @@ const main = function() {
     enterData: function() {
       const firstTeamName = readlineSync.question("1팀의 이름을 입력하세요> ");
       this.firstTeam = new Team(firstTeamName);
-      this.firstTeam.addPlayer();
+      this.firstTeam.addPlayers();
       const secondTeamName = readlineSync.question("2팀의 이름을 입력하세요> ");
       this.secondTeam = new Team(secondTeamName);
-      this.secondTeam.addPlayer();
+      this.secondTeam.addPlayers();
       console.log("\n팀 데이터 입력이 완료되었습니다.\n");
     },
     printData: function() {

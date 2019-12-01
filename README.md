@@ -94,5 +94,6 @@
 9. 저장된 데이터를 출력하는 printData 메소드를 추가하였습니다.<br>
    또, printData 메소드 수해 후 종료하도록 수정하였습니다.
 
+10. addPlayer 메소드의 명칭을 addPlayers로 변경하고 반복되는 부분을 addPlayer라는 메소드로 분리하였습니다.
 
 ## Step 3
