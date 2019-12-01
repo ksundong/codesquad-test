@@ -47,6 +47,9 @@ class Team {
       return false;
     }
   }
+  check() {
+    return typeof this.teamName === "string";
+  }
   showInfo() {
     console.log(this.teamName + " 팀 정보");
     for (let i = 0; i < this.players.length; i++) {
@@ -56,84 +59,95 @@ class Team {
   }
 }
 
-const main = function() {
-  const game = {
-    STRIKE: "strike",
-    BALL: "ball",
-    OUT: "out",
-    HIT: "hit",
-    get actions() {
-      return [this.STRIKE, this.BALL, this.OUT, this.HIT];
-    },
-    strikes: 0,
-    balls: 0,
-    outs: 0,
-    hits: 0,
-    firstTeam: new Team(),
-    secondTeam: new Team(),
-    selectMenu: function(input) {
-      if (input === "1") this.enterData();
-      else if (input === "2") this.printData();
-      else console.log("올바른 값을 입력해주세요.");
-    },
-    enterData: function() {
-      const firstTeamName = readlineSync.question("1팀의 이름을 입력하세요> ");
-      this.firstTeam = new Team(firstTeamName);
-      this.firstTeam.addPlayers();
-      const secondTeamName = readlineSync.question("2팀의 이름을 입력하세요> ");
-      this.secondTeam = new Team(secondTeamName);
-      this.secondTeam.addPlayers();
-      console.log("\n팀 데이터 입력이 완료되었습니다.\n");
-    },
-    printData: function() {
+const game = {
+  STRIKE: "strike",
+  BALL: "ball",
+  OUT: "out",
+  HIT: "hit",
+  get actions() {
+    return [this.STRIKE, this.BALL, this.OUT, this.HIT];
+  },
+  strikes: 0,
+  balls: 0,
+  outs: 0,
+  hits: 0,
+  firstTeam: new Team(),
+  secondTeam: new Team(),
+  selectMenu: function(input) {
+    if (input === "1") this.enterData();
+    else if (input === "2") this.printData();
+    else console.log("올바른 값을 입력해주세요.");
+  },
+  enterData: function() {
+    const firstTeamName = this.enterTeamName(1);
+    this.firstTeam = new Team(firstTeamName);
+    this.firstTeam.addPlayers();
+    const secondTeamName = this.enterTeamName(2);
+    this.secondTeam = new Team(secondTeamName);
+    this.secondTeam.addPlayers();
+    console.log("\n팀 데이터 입력이 완료되었습니다.\n");
+  },
+  printData: function() {
+    if (this.firstTeam.check() && this.secondTeam.check()) {
       this.firstTeam.showInfo();
       console.log();
       this.secondTeam.showInfo();
       process.exit();
-    },
-    play: function() {
-      const random = Math.floor(Math.random() * this.actions.length);
-      this.update(this.actions[random]);
-      this.log();
-    },
-    update: function(action) {
-      if (action === this.STRIKE) this.handleStrike();
-      else if (action === this.BALL) this.handleBall();
-      else if (action === this.OUT) this.handleOut();
-      else if (action === this.HIT) this.handleHit();
-    },
-    log: function() {
-      console.log(this.strikes + "S " + this.balls + "B " + this.outs + "O\n");
-    },
-    over: function() {
-      console.log("최종 안타수: " + this.hits + "\nGAME OVER");
-    },
-    handleStrike: function() {
-      console.log("스트라이크!");
-      this.strikes++;
-      if (this.strikes === 3) this.update("out");
-    },
-    handleBall: function() {
-      console.log("볼!");
-      this.balls++;
-      if (this.balls === 4) this.update("hit");
-    },
-    handleOut: function() {
-      console.log("아웃! 다음 타자가 타석에 입장했습니다.");
-      this.changeBatter();
-      this.outs++;
-    },
-    handleHit: function() {
-      console.log("안타! 다음 타자가 타석에 입장했습니다.");
-      this.changeBatter();
-      this.hits++;
-    },
-    changeBatter: function() {
-      this.strikes = 0;
-      this.balls = 0;
+    } else {
+      console.log("데이터가 입력되지 않았습니다. 입력후에 다시 시도해주세요.\n");
     }
-  };
+  },
+  enterTeamName: function(num) {
+    while (true) {
+      const teamName = readlineSync.question(num + "팀의 이름을 입력하세요> ");
+      if (teamName.length > 0) return teamName;
+      else console.log("팀 이름을 입력해주세요.\n");
+    }
+  },
+  play: function() {
+    const random = Math.floor(Math.random() * this.actions.length);
+    this.update(this.actions[random]);
+    this.log();
+  },
+  update: function(action) {
+    if (action === this.STRIKE) this.handleStrike();
+    else if (action === this.BALL) this.handleBall();
+    else if (action === this.OUT) this.handleOut();
+    else if (action === this.HIT) this.handleHit();
+  },
+  log: function() {
+    console.log(this.strikes + "S " + this.balls + "B " + this.outs + "O\n");
+  },
+  over: function() {
+    console.log("최종 안타수: " + this.hits + "\nGAME OVER");
+  },
+  handleStrike: function() {
+    console.log("스트라이크!");
+    this.strikes++;
+    if (this.strikes === 3) this.update("out");
+  },
+  handleBall: function() {
+    console.log("볼!");
+    this.balls++;
+    if (this.balls === 4) this.update("hit");
+  },
+  handleOut: function() {
+    console.log("아웃! 다음 타자가 타석에 입장했습니다.");
+    this.changeBatter();
+    this.outs++;
+  },
+  handleHit: function() {
+    console.log("안타! 다음 타자가 타석에 입장했습니다.");
+    this.changeBatter();
+    this.hits++;
+  },
+  changeBatter: function() {
+    this.strikes = 0;
+    this.balls = 0;
+  }
+};
 
+const main = function() {
   while (true) {
     console.log("신나는 야구시합\n1. 데이터 입력\n2. 데이터 출력\n");
     game.selectMenu(readlineSync.question("메뉴선택 (1 - 2) "));
