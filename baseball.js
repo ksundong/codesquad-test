@@ -19,14 +19,32 @@ class Team {
     }
   }
   addPlayer(i) {
-    const info = readlineSync.question(i + 1 + "번 타자 정보 입력> ");
-    const name = info.split(",")[0].trim();
-    const batAvgStr = info.split(",")[1].trim();
-    const batAvg = Number.parseFloat(batAvgStr);
+    while (true) {
+      const info = readlineSync.question(i + 1 + "번 타자 정보 입력> ");
+      const infoArr = info.split(",");
+      if (!this.checkPlayerInfoArrCount(infoArr)) continue;
+      const name = infoArr[0].trim();
+      const batAvgStr = infoArr[1].trim();
+      const batAvg = Number.parseFloat(batAvgStr);
+      const validation = this.validatePlayerInfo(batAvgStr, batAvg);
+      if (validation) this.players[i] = new Player(i + 1, name, batAvg);
+      else continue;
+      break;
+    }
+  }
+  checkPlayerInfoArrCount(infoArr) {
+    if (infoArr.length !== 2) {
+      console.log("잘못된 값이 입력되었습니다.");
+      return false;
+    }
+    return true;
+  }
+  validatePlayerInfo(batAvgStr, batAvg) {
     if (batAvgStr.length === 5 && batAvg > 0.1 && batAvg < 0.5) {
-      this.players[i] = new Player(i + 1, name, batAvg);
+      return true;
     } else {
       console.log("잘못된 타율이 입력되었습니다.");
+      return false;
     }
   }
   showInfo() {
@@ -37,6 +55,7 @@ class Team {
     }
   }
 }
+
 const main = function() {
   const game = {
     STRIKE: "strike",
