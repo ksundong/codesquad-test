@@ -18,16 +18,16 @@ class Team {
       this.addPlayer(i);
     }
   }
-  addPlayer(i) {
+  addPlayer(number) {
     while (true) {
-      const info = readlineSync.question(i + 1 + "번 타자 정보 입력> ");
+      const info = readlineSync.question(number + 1 + "번 타자 정보 입력> ");
       const infoArr = info.split(",");
       if (!this.checkPlayerInfoArrCount(infoArr)) continue;
       const name = infoArr[0].trim();
       const batAvgStr = infoArr[1].trim();
       const batAvg = Number.parseFloat(batAvgStr);
       const validation = this.validatePlayerInfo(batAvgStr, batAvg);
-      if (validation) this.players[i] = new Player(i + 1, name, batAvg);
+      if (validation) this.players[number] = new Player(number + 1, name, batAvg);
       else continue;
       break;
     }
