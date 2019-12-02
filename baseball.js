@@ -7,6 +7,7 @@ class Player {
     this.batAvg = batAvg;
     this.balls = 0;
     this.strikes = 0;
+    this.calculateAvg(batAvg);
   }
   get getBalls() {
     return this.balls;
@@ -23,6 +24,12 @@ class Player {
   resetCount() {
     this.balls = 0;
     this.strikes = 0;
+  }
+  calculateAvg(batAvg) {
+    this.hitAvg = batAvg;
+    this.strAvg = (1 - batAvg) / 2 - 0.05;
+    this.ballAvg = (1 - batAvg) / 2 - 0.05;
+    this.outAvg = 0.1;
   }
 }
 

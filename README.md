@@ -124,4 +124,6 @@
 
 5. 이닝을 수행할 때 필요한 Inning Class를 만들고 game의 outs와 hits를 이동하였습니다.
 
+6. 타자의 확률을 계산하는 calculateAvg 메소드를 Player 클래스에 만들어 객체 생성시 계산하도록 하였습니다.
+
 ## Step 3
