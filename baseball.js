@@ -27,6 +27,9 @@ class Player {
     this.balls = 0;
     this.strikes = 0;
   }
+  showInfo() {
+    return this.order + "번 " + this.name;
+  }
   bat(random) {
     if (random <= this.outAvg) return OUT;
     else if (random <= this.outAvg + this.strAvg) return STRIKE;
@@ -40,6 +43,10 @@ class Team {
     this.teamName = teamName;
     this.players = new Array(9);
     this.scores = 0;
+    this.lastBatter = 0;
+  }
+  addLastBatter() {
+    this.lastBatter < 8 ? this.lastBatter++ : this.lastBatter = 0;
   }
   addPlayers() {
     for (var i = 0; i < this.players.length; i++) {
@@ -101,6 +108,9 @@ class Inning {
     this.outs = 0;
     this.hits = 0;
   }
+  showInfo() {
+    return this.num + "회" + this.state + " ";
+  }
 }
 
 const game = {
@@ -147,9 +157,9 @@ const game = {
   play: function() {
     if (this.checkTeams()) {
       this.startMsg();
-      for (let i = 0; i < this.firstTeam.players.length; i++) {
-        const random = Math.random();
-        console.log(this.firstTeam.players[i].bat(random));
+      for (let i = 1; i < 7; i++) {
+        this.playInning(i, TOP, this.firstTeam);
+        this.playInning(i, BOTTOM, this.secondTeam);
       }
       this.over();
     } else {
@@ -161,50 +171,81 @@ const game = {
       this.firstTeam.teamName +
       " VS " +
       this.secondTeam.teamName +
-      "의 시합을 시작합니다.";
+      "의 시합을 시작합니다.\n";
     console.log(msg);
   },
   noDataMsg: function() {
     console.log("데이터가 입력되지 않았습니다. 입력후에 다시 시도해주세요.\n");
   },
-  update: function(action) {
-    if (action === this.STRIKE) this.handleStrike();
-    else if (action === this.BALL) this.handleBall();
-    else if (action === this.OUT) this.handleOut();
-    else if (action === this.HIT) this.handleHit();
+  playInning: function(num, state, attackTeam) {
+    const inning = new Inning(num, state);
+    console.log(inning.showInfo() + attackTeam.teamName + " 공격\n");
+    while (true) {
+      for (let i = attackTeam.lastBatter; i < attackTeam.players.length; i++) {
+        const player = attackTeam.players[i];
+        this.playBatting(player, inning, attackTeam);
+        attackTeam.addLastBatter();
+        if (inning.outs === 3) return;
+      }
+    }
   },
-  log: function() {
-    console.log(this.strikes + "S " + this.balls + "B " + this.outs + "O\n");
+  playBatting: function(player, inning, team) {
+    console.log(player.showInfo());
+    while (!player.out) {
+      const action = player.bat(Math.random());
+      this.update(action, player, inning, team);
+      this.log(player, inning);
+    }
+    player.out = false;
+  },
+  update: function(action, player, inning, team) {
+    if (action === STRIKE) this.handleStrike(player, inning);
+    else if (action === BALL) this.handleBall(player, inning, team);
+    else if (action === OUT) this.handleOut(player, inning);
+    else if (action === HIT) this.handleHit(player, inning, team);
+  },
+  handleStrike(player, inning) {
+    console.log("스트라이크!");
+    player.strikes++;
+    if (player.strikes === 3) {
+      this.update(OUT, player, inning);
+    }
+  },
+  handleBall(player, inning, team) {
+    console.log("볼!");
+    player.balls++;
+    if (player.balls === 4) {
+      this.update(HIT, player, inning, team);
+    }
+  },
+  handleOut(player, innning) {
+    console.log("아웃!");
+    player.changeBatter();
+    innning.outs++;
+  },
+  handleHit(player, inning, team) {
+    console.log("안타!");
+    player.changeBatter();
+    inning.hits++;
+    if (inning.hits === 4) {
+      console.log(team.teamName + "팀 득점!!");
+      inning.hits--;
+      team.scores++;
+    }
+  },
+  log(player, inning) {
+    console.log(
+      player.strikes + "S " + player.balls + "B " + inning.outs + "O\n"
+    );
   },
   over: function() {
+    const team1 = this.firstTeam;
+    const team2 = this.secondTeam;
+    console.log("경기 종료\n");
+    console.log(team1.teamName + " VS " + team2.teamName);
+    console.log(team1.scores + " : " + team2.scores);
     console.log("Thank you!");
     process.exit();
-  },
-  handleStrike: function() {
-    console.log("스트라이크!");
-    this.strikes++;
-    if (this.strikes === 3) this.update("out");
-  },
-  handleBall: function() {
-    console.log("볼!");
-    this.balls++;
-    if (this.balls === 4) this.update("hit");
-  },
-  handleOut: function() {
-    console.log("아웃! 다음 타자가 타석에 입장했습니다.");
-    this.changeBatter();
-    this.outs++;
-    player.changeBatter();
-  },
-  handleHit: function() {
-    console.log("안타! 다음 타자가 타석에 입장했습니다.");
-    this.changeBatter();
-    this.hits++;
-    player.changeBatter();
-  },
-  changeBatter: function() {
-    this.strikes = 0;
-    this.balls = 0;
   }
 };
 
