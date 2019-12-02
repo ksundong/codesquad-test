@@ -30,6 +30,13 @@ class Team {
   constructor(teamName) {
     this.teamName = teamName;
     this.players = new Array(9);
+    this.scores = 0;
+  }
+  get getScores() {
+    return this.scores;
+  }
+  set setScores(scores) {
+    this.scores = scores;
   }
   addPlayers() {
     for (var i = 0; i < this.players.length; i++) {

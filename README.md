@@ -120,4 +120,6 @@
 
 3. game의 balls와 strikes를 Player Class로 이동하였습니다.
 
+4. 팀의 점수를 확인할 score라는 속성을 Team 클래스에 추가하였습니다.
+
 ## Step 3
