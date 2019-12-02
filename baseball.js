@@ -12,12 +12,18 @@ class Player {
   get getBalls() {
     return this.balls;
   }
+  /**
+   * @param {number} balls
+   */
   set setBalls(balls) {
     this.balls = balls;
   }
   get getStrikes() {
     return this.strikes;
   }
+  /**
+   * @param {number} strikes
+   */
   set setStrikes(strikes) {
     this.strikes = strikes;
   }
@@ -41,6 +47,9 @@ class Team {
   get getScores() {
     return this.scores;
   }
+  /**
+   * @param {number} scores
+   */
   set setScores(scores) {
     this.scores = scores;
   }
@@ -103,12 +112,18 @@ class Inning {
   get getOuts() {
     return this.outs;
   }
+  /**
+   * @param {number} outs
+   */
   set setOuts(outs) {
     this.outs = outs;
   }
   get getHits() {
     return this.hits;
   }
+  /**
+   * @param {number} hits
+   */
   set setHits(hits) {
     this.hits = hits;
   }
