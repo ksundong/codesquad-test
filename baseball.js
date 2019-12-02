@@ -81,6 +81,7 @@ const game = {
   selectMenu: function(input) {
     if (input === "1") this.enterData();
     else if (input === "2") this.printData();
+    else if (input === "3") this.play();
     else console.log("올바른 값을 입력해주세요.");
   },
   enterData: function() {
@@ -92,18 +93,6 @@ const game = {
     this.secondTeam.addPlayers();
     console.log("\n팀 데이터 입력이 완료되었습니다.\n");
   },
-  printData: function() {
-    if (this.firstTeam.check() && this.secondTeam.check()) {
-      this.firstTeam.showInfo();
-      console.log();
-      this.secondTeam.showInfo();
-      process.exit();
-    } else {
-      console.log(
-        "데이터가 입력되지 않았습니다. 입력후에 다시 시도해주세요.\n"
-      );
-    }
-  },
   enterTeamName: function(num) {
     while (true) {
       const teamName = readlineSync.question(num + "팀의 이름을 입력하세요> ");
@@ -114,10 +103,37 @@ const game = {
       }
     }
   },
+  printData: function() {
+    if (this.firstTeam.check() && this.secondTeam.check()) {
+      this.firstTeam.showInfo();
+      console.log();
+      this.secondTeam.showInfo();
+      console.log();
+    } else {
+      console.log(
+        "데이터가 입력되지 않았습니다. 입력후에 다시 시도해주세요.\n"
+      );
+    }
+  },
   play: function() {
-    const random = Math.floor(Math.random() * this.actions.length);
-    this.update(this.actions[random]);
-    this.log();
+    const firstTeam = this.firstTeam;
+    const secondTeam = this.secondTeam;
+    if (firstTeam.check() && secondTeam.check()) {
+      const msg =
+        firstTeam.teamName +
+        " VS " +
+        secondTeam.teamName +
+        "의 시합을 시작합니다.";
+      console.log(msg);
+      this.over();
+    } else {
+      console.log(
+        "데이터가 입력되지 않았습니다. 입력후에 다시 시도해주세요.\n"
+      );
+    }
+    // const random = Math.floor(Math.random() * this.actions.length);
+    // this.update(this.actions[random]);
+    // this.log();
   },
   update: function(action) {
     if (action === this.STRIKE) this.handleStrike();
@@ -129,7 +145,8 @@ const game = {
     console.log(this.strikes + "S " + this.balls + "B " + this.outs + "O\n");
   },
   over: function() {
-    console.log("최종 안타수: " + this.hits + "\nGAME OVER");
+    console.log("Thank you!");
+    process.exit();
   },
   handleStrike: function() {
     console.log("스트라이크!");
@@ -159,8 +176,10 @@ const game = {
 
 const main = function() {
   while (true) {
-    console.log("신나는 야구시합\n1. 데이터 입력\n2. 데이터 출력\n");
-    game.selectMenu(readlineSync.question("메뉴선택 (1 - 2) "));
+    console.log(
+      "신나는 야구시합\n1. 데이터 입력\n2. 데이터 출력\n3. 시합 시작\n"
+    );
+    game.selectMenu(readlineSync.question("메뉴선택 (1 - 3) "));
   }
 
   // while (game.outs < 3) {
