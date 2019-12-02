@@ -26,7 +26,6 @@ class Player {
     this.strikes = 0;
   }
   calculateAvg(batAvg) {
-    this.hitAvg = batAvg;
     this.strAvg = (1 - batAvg) / 2 - 0.05;
     this.ballAvg = (1 - batAvg) / 2 - 0.05;
     this.outAvg = 0.1;
