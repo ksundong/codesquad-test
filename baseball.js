@@ -54,9 +54,7 @@ class Team {
     while (true) {
       const info = readlineSync.question(number + 1 + "번 타자 정보 입력> ");
       const infoArr = info.split(",");
-      if (!this.checkPlayerInfoArrCount(infoArr)) {
-        continue;
-      }
+      if (!this.checkPlayerInfoArrCount(infoArr)) continue;
       const name = infoArr[0].trim();
       const batAvgStr = infoArr[1].trim();
       const batAvg = Number.parseFloat(batAvgStr);
