@@ -89,6 +89,27 @@ class Team {
   }
 }
 
+class Inning {
+  constructor(num, state) {
+    this.num = num;
+    this.state = state; // Top or Bottom
+    this.outs = 0;
+    this.hits = 0;
+  }
+  get getOuts() {
+    return this.outs;
+  }
+  set setOuts(outs) {
+    this.outs = outs;
+  }
+  get getHits() {
+    return this.hits;
+  }
+  set setHits(hits) {
+    this.hits = hits;
+  }
+}
+
 const game = {
   STRIKE: "strike",
   BALL: "ball",
@@ -97,8 +118,6 @@ const game = {
   get actions() {
     return [this.STRIKE, this.BALL, this.OUT, this.HIT];
   },
-  outs: 0,
-  hits: 0,
   firstTeam: new Team(),
   secondTeam: new Team(),
   checkTeams: function() {

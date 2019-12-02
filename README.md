@@ -122,4 +122,6 @@
 
 4. 팀의 점수를 확인할 score라는 속성을 Team 클래스에 추가하였습니다.
 
+5. 이닝을 수행할 때 필요한 Inning Class를 만들고 game의 outs와 hits를 이동하였습니다.
+
 ## Step 3
