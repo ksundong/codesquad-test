@@ -5,6 +5,24 @@ class Player {
     this.order = order;
     this.name = name;
     this.batAvg = batAvg;
+    this.balls = 0;
+    this.strikes = 0;
+  }
+  get getBalls() {
+    return this.balls;
+  }
+  set setBalls(balls) {
+    this.balls = balls;
+  }
+  get getStrikes() {
+    return this.strikes;
+  }
+  set setStrikes(strikes) {
+    this.strikes = strikes;
+  }
+  resetCount() {
+    this.balls = 0;
+    this.strikes = 0;
   }
 }
 
@@ -72,8 +90,6 @@ const game = {
   get actions() {
     return [this.STRIKE, this.BALL, this.OUT, this.HIT];
   },
-  strikes: 0,
-  balls: 0,
   outs: 0,
   hits: 0,
   firstTeam: new Team(),

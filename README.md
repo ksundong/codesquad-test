@@ -118,4 +118,6 @@
 
 2. Team의 존재 여부를 체크하는 부분이 중복되어 game 객체의 메소드로 분리하였습니다.
 
+3. game의 balls와 strikes를 Player Class로 이동하였습니다.
+
 ## Step 3
