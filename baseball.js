@@ -71,7 +71,7 @@ class Team {
       const name = infoArr[0].trim();
       const batAvgStr = infoArr[1].trim();
       const batAvg = Number.parseFloat(batAvgStr);
-      const validation = this.validatePlayerInfo(batAvgStr, batAvg);
+      const validation = this.validatePlayerInfo(name, batAvgStr, batAvg);
       if (validation) {
         this.players[number] = new Player(number + 1, name, batAvg);
       } else {
@@ -87,7 +87,11 @@ class Team {
     }
     return true;
   }
-  validatePlayerInfo(batAvgStr, batAvg) {
+  validatePlayerInfo(name, batAvgStr, batAvg) {
+    if (name.length === 0) {
+      console.log("선수의 이름을 입력해주세요.");
+      return false;
+    }
     if (batAvgStr.length === 5 && batAvg > 0.1 && batAvg < 0.5) {
       return true;
     } else {
