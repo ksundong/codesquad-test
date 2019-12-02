@@ -136,4 +136,7 @@
 
 11. getter와 setter를 사용하지 않거나 나중에 필요시 추가하기 위하여 제거하였습니다.
 
+12. Player의 resetCount 메소드를 제거하고 changeBatter 메소드를 옮겼습니다.  
+    Player에 out여부를 판단할 out 객체를 추가하였습니다.
+
 ## Step 3

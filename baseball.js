@@ -15,15 +15,17 @@ class Player {
     this.balls = 0;
     this.strikes = 0;
     this.calculateAvg(batAvg);
-  }
-  resetCount() {
-    this.balls = 0;
-    this.strikes = 0;
+    this.out = false;
   }
   calculateAvg(batAvg) {
     this.strAvg = (1 - batAvg) / 2 - 0.05;
     this.ballAvg = (1 - batAvg) / 2 - 0.05;
     this.outAvg = 0.1;
+  }
+  changeBatter() {
+    this.out = true;
+    this.balls = 0;
+    this.strikes = 0;
   }
   bat(random) {
     if (random <= this.outAvg) return OUT;
@@ -192,11 +194,13 @@ const game = {
     console.log("아웃! 다음 타자가 타석에 입장했습니다.");
     this.changeBatter();
     this.outs++;
+    player.changeBatter();
   },
   handleHit: function() {
     console.log("안타! 다음 타자가 타석에 입장했습니다.");
     this.changeBatter();
     this.hits++;
+    player.changeBatter();
   },
   changeBatter: function() {
     this.strikes = 0;
