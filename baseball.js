@@ -78,11 +78,14 @@ const game = {
   hits: 0,
   firstTeam: new Team(),
   secondTeam: new Team(),
+  checkTeams: function() {
+    return this.firstTeam.check() && this.secondTeam.check();
+  },
   selectMenu: function(input) {
     if (input === "1") this.enterData();
     else if (input === "2") this.printData();
     else if (input === "3") this.play();
-    else console.log("올바른 값을 입력해주세요.");
+    else console.log("올바른 값을 입력해주세요.\n");
   },
   enterData: function() {
     const firstTeamName = this.enterTeamName(1);
@@ -104,7 +107,7 @@ const game = {
     }
   },
   printData: function() {
-    if (this.firstTeam.check() && this.secondTeam.check()) {
+    if (this.checkTeams()) {
       this.firstTeam.showInfo();
       console.log();
       this.secondTeam.showInfo();
@@ -116,13 +119,11 @@ const game = {
     }
   },
   play: function() {
-    const firstTeam = this.firstTeam;
-    const secondTeam = this.secondTeam;
-    if (firstTeam.check() && secondTeam.check()) {
+    if (this.checkTeams()) {
       const msg =
-        firstTeam.teamName +
+        this.firstTeam.teamName +
         " VS " +
-        secondTeam.teamName +
+        this.secondTeam.teamName +
         "의 시합을 시작합니다.";
       console.log(msg);
       this.over();
@@ -181,11 +182,6 @@ const main = function() {
     );
     game.selectMenu(readlineSync.question("메뉴선택 (1 - 3) "));
   }
-
-  // while (game.outs < 3) {
-  //   game.play();
-  // }
-  // game.over();
 };
 
 main();
