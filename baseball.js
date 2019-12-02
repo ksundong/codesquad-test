@@ -159,28 +159,30 @@ const game = {
       this.secondTeam.showInfo();
       console.log();
     } else {
-      console.log(
-        "데이터가 입력되지 않았습니다. 입력후에 다시 시도해주세요.\n"
-      );
+      this.noDataMsg();
     }
   },
   play: function() {
     if (this.checkTeams()) {
-      const msg =
-        this.firstTeam.teamName +
-        " VS " +
-        this.secondTeam.teamName +
-        "의 시합을 시작합니다.";
-      console.log(msg);
+      this.startMsg();
       this.over();
     } else {
-      console.log(
-        "데이터가 입력되지 않았습니다. 입력후에 다시 시도해주세요.\n"
-      );
+      this.noDataMsg();
     }
     // const random = Math.floor(Math.random() * this.actions.length);
     // this.update(this.actions[random]);
     // this.log();
+  },
+  startMsg: function() {
+    const msg =
+      this.firstTeam.teamName +
+      " VS " +
+      this.secondTeam.teamName +
+      "의 시합을 시작합니다.";
+    console.log(msg);
+  },
+  noDataMsg: function() {
+    console.log("데이터가 입력되지 않았습니다. 입력후에 다시 시도해주세요.\n");
   },
   update: function(action) {
     if (action === this.STRIKE) this.handleStrike();
