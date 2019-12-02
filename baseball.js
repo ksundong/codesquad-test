@@ -1,5 +1,10 @@
 const readlineSync = require("readline-sync");
 
+const STRIKE = "strike";
+const BALL = "ball";
+const OUT = "out";
+const HIT = "hit";
+
 class Player {
   constructor(order, name, batAvg) {
     this.order = order;
@@ -130,13 +135,6 @@ class Inning {
 }
 
 const game = {
-  STRIKE: "strike",
-  BALL: "ball",
-  OUT: "out",
-  HIT: "hit",
-  get actions() {
-    return [this.STRIKE, this.BALL, this.OUT, this.HIT];
-  },
   firstTeam: new Team(),
   secondTeam: new Team(),
   checkTeams: function() {
