@@ -41,6 +41,12 @@ class Player {
     this.ballAvg = (1 - batAvg) / 2 - 0.05;
     this.outAvg = 0.1;
   }
+  bat(random) {
+    if (random <= this.outAvg) return OUT;
+    else if (random <= this.outAvg + this.strAvg) return STRIKE;
+    else if (random <= this.outAvg + this.strAvg + this.ballAvg) return BALL;
+    else return HIT;
+  }
 }
 
 class Team {
@@ -182,13 +188,14 @@ const game = {
   play: function() {
     if (this.checkTeams()) {
       this.startMsg();
+      for (let i = 0; i < this.firstTeam.players.length; i++) {
+        const random = Math.random();
+        console.log(this.firstTeam.players[i].bat(random));
+      }
       this.over();
     } else {
       this.noDataMsg();
     }
-    // const random = Math.floor(Math.random() * this.actions.length);
-    // this.update(this.actions[random]);
-    // this.log();
   },
   startMsg: function() {
     const msg =
