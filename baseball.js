@@ -4,6 +4,8 @@ const STRIKE = "strike";
 const BALL = "ball";
 const OUT = "out";
 const HIT = "hit";
+const TOP = "초";
+const BOTTOM = "말";
 
 class Player {
   constructor(order, name, batAvg) {
@@ -120,7 +122,7 @@ class Team {
 class Inning {
   constructor(num, state) {
     this.num = num;
-    this.state = state; // Top or Bottom
+    this.state = state; // TOP or BOTTOM
     this.outs = 0;
     this.hits = 0;
   }
