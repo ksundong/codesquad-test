@@ -22,13 +22,18 @@ class Team {
     while (true) {
       const info = readlineSync.question(number + 1 + "번 타자 정보 입력> ");
       const infoArr = info.split(",");
-      if (!this.checkPlayerInfoArrCount(infoArr)) continue;
+      if (!this.checkPlayerInfoArrCount(infoArr)) {
+        continue;
+      }
       const name = infoArr[0].trim();
       const batAvgStr = infoArr[1].trim();
       const batAvg = Number.parseFloat(batAvgStr);
       const validation = this.validatePlayerInfo(batAvgStr, batAvg);
-      if (validation) this.players[number] = new Player(number + 1, name, batAvg);
-      else continue;
+      if (validation) {
+        this.players[number] = new Player(number + 1, name, batAvg);
+      } else {
+        continue;
+      }
       break;
     }
   }
@@ -94,14 +99,19 @@ const game = {
       this.secondTeam.showInfo();
       process.exit();
     } else {
-      console.log("데이터가 입력되지 않았습니다. 입력후에 다시 시도해주세요.\n");
+      console.log(
+        "데이터가 입력되지 않았습니다. 입력후에 다시 시도해주세요.\n"
+      );
     }
   },
   enterTeamName: function(num) {
     while (true) {
       const teamName = readlineSync.question(num + "팀의 이름을 입력하세요> ");
-      if (teamName.length > 0) return teamName;
-      else console.log("팀 이름을 입력해주세요.\n");
+      if (teamName.length > 0) {
+        return teamName;
+      } else {
+        console.log("팀 이름을 입력해주세요.\n");
+      }
     }
   },
   play: function() {
