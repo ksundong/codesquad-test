@@ -244,8 +244,14 @@ const game = {
     console.log("경기 종료\n");
     console.log(team1.teamName + " VS " + team2.teamName);
     console.log(team1.scores + " : " + team2.scores);
+    this.compareScore(team1, team2);
     console.log("Thank you!");
     process.exit();
+  },
+  compareScore: function(team1, team2) {
+    team1.scores < team2.scores ? console.log(team2.teamName + "팀 승리!!")
+      : team1.scores > team2.scores ? console.log(team1.teamName + "팀 승리!!")
+      : console.log("무승부입니다.");
   }
 };
 
