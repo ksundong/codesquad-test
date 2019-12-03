@@ -171,3 +171,14 @@
 
 4. log 출력을 전광판 아래에 출력할 수 있도록 log를 저장하는 logHistory를 선언하였습니다.  
    recordLog 라는 메소드를 이용하여 저장을 간단히 할 수 있도록 하였습니다.
+
+5. 전광판을 출력하는 기능을 생성하였습니다. enter를 입력시 다음 투구를 수행합니다.  
+   showScoreBoard가 메인 기능이며 showTopBoard, showMiddleBoard, showBottomBoard로 이루어져 있습니다.
+   - showTopBoard: 이 메소드는 현재까지의 점수현황을 보여주는 메소드입니다.
+     반복되는 부분을 showScoreInfo라는 메소드로 분리하였습니다.
+   - showMiddleBoard: 이 메소드는 선수정보 및 카운트를 보여주는 메소드입니다.
+     showPlayerStatus 메소드로 공통되는 부분을 분리하였으며,
+     displayBatter라는 메소드로 현재 공격팀의 타자를 보여주고,
+     showGameCount라는 메소드로 현재 타자의 카운트를 보여줍니다.
+   - showBottomBoard: 이 메소드는 팀의 투구 수, 삼진 수, 안타 수를 보여주는 부분입니다.
+     반복되는 부분을 makeBottomMsg라는 메소드로 추출하였습니다.

@@ -213,6 +213,8 @@ const game = {
       const action = player.bat(Math.random());
       this.update(action, player, inning, attackTeam, defenseTeam);
       this.log(player, inning);
+      this.showScoreBoard(inning);
+      readlineSync.question("다음 투구 보기(enter) or 스킵하고 X회말 후 투구보기(숫자+enter) ? ");
     }
     this.logHistory = "";
     player.out = false;
@@ -259,6 +261,98 @@ const game = {
     this.recordLog(
       player.strikes + "S " + player.balls + "B " + inning.outs + "O\n"
     );
+  },
+  showScoreBoard: function(inning) {
+    const team1 = this.firstTeam;
+    const team2 = this.secondTeam;
+    console.clear();
+    this.showTopBoard(team1, team2);
+    this.showMiddleBoard(team1, team2, inning);
+    this.showBottomBoard(team1, team2);
+    console.log("\n" + this.logHistory);
+  },
+  showTopBoard: function(team1, team2) {
+    const topBar = new Team("TEAM");
+    topBar.scoreHistory = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    topBar.scores = "TOT";
+    console.log("+--------------------------------------------+");
+    this.showScoreInfo(topBar);
+    this.showScoreInfo(team1);
+    this.showScoreInfo(team2);
+    console.log("|                                            |");
+  },
+  showScoreInfo: function(team) {
+    const h = team.scoreHistory;
+    let msg = "| " + team.teamName + "  ";
+    for (let i = 0; i < h.length; i++) {
+      msg += h[i] + " ";
+    }
+    msg += "|   " + team.scores + "   |";
+    console.log(msg);
+  },
+  showMiddleBoard: function(team1, team2, inning) {
+    const msg =
+      "|     " +
+      team1.teamName +
+      "                             " +
+      team2.teamName +
+      "  |";
+    console.log(msg);
+    this.showPlayerStatus(team1, team2, inning);
+  },
+  showPlayerStatus: function(team1, team2, inning) {
+    const attackTeam = team1.isAttackTeam ? team1 : team2;
+    const attackTeamBatter = attackTeam.players[attackTeam.lastBatter];
+    for (let i = 0; i < team1.players.length; i++) {
+      let msg = "| ";
+      const team1Player = team1.players[i];
+      const team2Player = team2.players[i];
+      msg += team1Player.order + ". " + team1Player.name + " ";
+      msg += this.displayBatter(team1, i);
+      msg += this.showGameCount(i, inning, attackTeamBatter);
+      msg += this.displayBatter(team2, i);
+      msg += "  " + team2Player.order + ". " + team2Player.name + " |";
+      console.log(msg);
+    }
+  },
+  displayBatter: function(team, num) {
+    return team.isAttackTeam && num === team.lastBatter ? "V" : " ";
+  },
+  showGameCount: function(num, inning, attackTeamBatter) {
+    if (num === 2) {
+      if (attackTeamBatter.strikes === 0) return "     S             ";
+      else if (attackTeamBatter.strikes === 1) return "     S X           ";
+      else if (attackTeamBatter.strikes === 2) return "     S X X         ";
+    } else if (num === 3) {
+      if (attackTeamBatter.balls === 0) return "     B             ";
+      else if (attackTeamBatter.balls === 1) return "     B X           ";
+      else if (attackTeamBatter.balls === 2) return "     B X X         ";
+      else if (attackTeamBatter.balls === 3) return "     B X X X       ";
+    } else if (num === 4) {
+      if (inning.outs === 0) return "     O             ";
+      else if (inning.outs === 1) return "     O X           ";
+      else if (inning.outs === 2) return "     O X X         ";
+      else if (inning.outs === 3) return "     O X X X       ";
+    } else return "                   ";
+  },
+  showBottomBoard: function(team1, team2) {
+    console.log("|                                            |");
+    this.makeBottomMsg("투구", team1.pitches, team2.pitches);
+    this.makeBottomMsg("삼진", team1.strikeouts, team2.strikeouts);
+    this.makeBottomMsg("안타", team1.hits, team2.hits);
+    console.log("+--------------------------------------------+");
+  },
+  makeBottomMsg: function(msg1, msg2, msg3) {
+    let msg = "| ";
+    msg +=
+      this.concatMsg(msg1, msg2) +
+      "                          " +
+      this.concatMsg(msg1, msg3) +
+      " |";
+    console.log(msg);
+  },
+  concatMsg: function(msg1, msg2) {
+    return msg1 + ": " + msg2;
   },
   over: function() {
     const team1 = this.firstTeam;
