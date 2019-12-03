@@ -57,7 +57,7 @@ class Team {
     this.lastBatter < 8 ? this.lastBatter++ : (this.lastBatter = 0);
   }
   addPlayers() {
-    for (var i = 0; i < this.players.length; i++) {
+    for (let i = 0; i < this.players.length; i++) {
       this.addPlayer(i);
     }
   }
