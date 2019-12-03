@@ -47,7 +47,7 @@ class Team {
     this.pitches = 0;
     this.strikeouts = 0;
     this.hits = 0;
-    this.scoreHistory = Array.apply(null, new Array(12)).map(
+    this.scoreHistory = Array.apply(null, new Array(6)).map(
       Number.prototype.valueOf,
       0
     );
@@ -274,7 +274,7 @@ const game = {
   },
   showTopBoard: function(team1, team2) {
     const topBar = new Team("TEAM");
-    topBar.scoreHistory = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    topBar.scoreHistory = [1, 2, 3, 4, 5, 6];
     topBar.scores = "TOT";
     console.log("+--------------------------------------------+");
     this.showScoreInfo(topBar);
@@ -284,11 +284,12 @@ const game = {
   },
   showScoreInfo: function(team) {
     const h = team.scoreHistory;
+    const totScr = team.scores !== "TOT" ? ` ${team.scores} ` : team.scores;
     let msg = "| " + team.teamName + "  ";
     for (let i = 0; i < h.length; i++) {
       msg += h[i] + " ";
     }
-    msg += "|   " + team.scores + "   |";
+    msg += "               |   " + totScr + "   |";
     console.log(msg);
   },
   showMiddleBoard: function(team1, team2, inning) {
@@ -344,12 +345,14 @@ const game = {
     let msg = "| ";
     msg +=
       this.concatMsg(msg1, msg2) +
-      "                          " +
+      "                        " +
       this.concatMsg(msg1, msg3) +
       " |";
     console.log(msg);
   },
   concatMsg: function(msg1, msg2) {
+    if ((msg2 + "").length < 2) msg2 += "  ";
+    else if ((msg2 + "").length < 3) msg2 += " ";
     return msg1 + ": " + msg2;
   },
   over: function() {
