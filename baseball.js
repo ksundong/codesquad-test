@@ -171,7 +171,7 @@ const game = {
       this.startMsg();
       for (let i = 1; i < 7; i++) {
         this.playInning(i, TOP, team1, team2);
-        if (i == 6 && team2.scores > team1.scores) break;
+        if (i === 6 && team2.scores > team1.scores) break;
         this.playInning(i, BOTTOM, team2, team1);
       }
       this.over();
