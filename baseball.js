@@ -28,7 +28,7 @@ class Player {
     this.strikes = 0;
   }
   showInfo() {
-    return this.order + "번 " + this.name;
+    return this.order + "번 타자 " + this.name + "입니다.";
   }
   bat(random) {
     if (random <= this.outAvg) return OUT;
