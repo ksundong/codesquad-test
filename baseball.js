@@ -51,6 +51,7 @@ class Team {
       Number.prototype.valueOf,
       0
     );
+    this.isAttackTeam = false;
   }
   addLastBatter() {
     this.lastBatter < 8 ? this.lastBatter++ : (this.lastBatter = 0);
@@ -162,11 +163,13 @@ const game = {
     }
   },
   play: function() {
+    const team1 = this.firstTeam;
+    const team2 = this.secondTeam;
     if (this.checkTeams()) {
       this.startMsg();
       for (let i = 1; i < 7; i++) {
-        this.playInning(i, TOP, this.firstTeam, this.secondTeam);
-        this.playInning(i, BOTTOM, this.secondTeam, this.firstTeam);
+        this.playInning(i, TOP, team1, team2);
+        this.playInning(i, BOTTOM, team2, team1);
       }
       this.over();
     } else {
@@ -187,6 +190,8 @@ const game = {
   playInning: function(num, state, attackTeam, defenseTeam) {
     const inning = new Inning(num, state);
     console.log(inning.showInfo() + attackTeam.teamName + " 공격\n");
+    attackTeam.isAttackTeam = true;
+    defenseTeam.isAttackTeam = false;
     while (true) {
       for (let i = attackTeam.lastBatter; i < attackTeam.players.length; i++) {
         const player = attackTeam.players[i];
