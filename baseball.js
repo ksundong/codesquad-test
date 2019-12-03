@@ -294,7 +294,9 @@ const game = {
     const msg =
       "|     " +
       team1.teamName +
-      "                             " +
+      "          " +
+      inning.showInfo() +
+      "             " +
       team2.teamName +
       "  |";
     console.log(msg);
