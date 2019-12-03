@@ -124,6 +124,7 @@ class Inning {
 const game = {
   firstTeam: new Team(),
   secondTeam: new Team(),
+  logHistory: "",
   checkTeams: function() {
     return this.firstTeam.check() && this.secondTeam.check();
   },
@@ -187,9 +188,13 @@ const game = {
   noDataMsg: function() {
     console.log("데이터가 입력되지 않았습니다. 입력후에 다시 시도해주세요.\n");
   },
+  recordLog: function(msg) {
+    this.logHistory += "\n" + msg;
+  },
   playInning: function(num, state, attackTeam, defenseTeam) {
     const inning = new Inning(num, state);
-    console.log(inning.showInfo() + attackTeam.teamName + " 공격\n");
+    this.logHistory = "";
+    this.recordLog(inning.showInfo() + attackTeam.teamName + " 공격\n");
     attackTeam.isAttackTeam = true;
     defenseTeam.isAttackTeam = false;
     while (true) {
@@ -202,13 +207,14 @@ const game = {
     }
   },
   playBatting: function(player, inning, attackTeam, defenseTeam) {
-    console.log(player.showInfo());
+    this.recordLog(player.showInfo());
     while (!player.out) {
       defenseTeam.pitches++;
       const action = player.bat(Math.random());
       this.update(action, player, inning, attackTeam, defenseTeam);
       this.log(player, inning);
     }
+    this.logHistory = "";
     player.out = false;
   },
   update: function(action, player, inning, attackTeam, defenseTeam) {
@@ -218,7 +224,7 @@ const game = {
     else if (action === HIT) this.handleHit(player, inning, attackTeam);
   },
   handleStrike(player, inning, defenseTeam) {
-    console.log("스트라이크!");
+    this.recordLog("스트라이크!");
     player.strikes++;
     if (player.strikes === 3) {
       defenseTeam.strikeouts++;
@@ -226,31 +232,31 @@ const game = {
     }
   },
   handleBall(player, inning, attackTeam) {
-    console.log("볼!");
+    this.recordLog("볼!");
     player.balls++;
     if (player.balls === 4) {
       this.update(HIT, player, inning, attackTeam);
     }
   },
   handleOut(player, innning) {
-    console.log("아웃!");
+    this.recordLog("아웃!");
     player.changeBatter();
     innning.outs++;
   },
   handleHit(player, inning, attackTeam) {
-    console.log("안타!");
+    this.recordLog("안타!");
     player.changeBatter();
     inning.hits++;
     attackTeam.hits++;
     if (inning.hits === 4) {
-      console.log(attackTeam.teamName + "팀 득점!!");
+      this.recordLog(attackTeam.teamName + "팀 득점!!\n");
       inning.hits--;
       attackTeam.scores++;
       attackTeam.scoreHistory[inning.num - 1]++;
     }
   },
   log(player, inning) {
-    console.log(
+    this.recordLog(
       player.strikes + "S " + player.balls + "B " + inning.outs + "O\n"
     );
   },
