@@ -125,6 +125,7 @@ const game = {
   firstTeam: new Team(),
   secondTeam: new Team(),
   logHistory: "",
+  skipNum: 0,
   checkTeams: function() {
     return this.firstTeam.check() && this.secondTeam.check();
   },
@@ -215,10 +216,38 @@ const game = {
       this.update(action, player, inning, attackTeam, defenseTeam);
       this.log(player, inning);
       this.showScoreBoard(inning);
-      readlineSync.question("다음 투구 보기(enter) or 스킵하고 X회말 후 투구보기(숫자+enter) ? ");
+      this.skipInning(inning);
     }
     this.logHistory = "";
     player.out = false;
+  },
+  skipInning: function(inning) {
+    if (inning.num <= this.skipNum) return;
+    const question =
+      "다음 투구 보기(enter) or 스킵하고 X회말 후 투구보기(숫자+enter) ? ";
+    while (true) {
+      const input = readlineSync.question(question);
+      if (this.inputChecking(input)) break;
+    }
+  },
+  inputChecking: function(input) {
+    const check = this.skipValidation(input);
+    if (check) {
+      this.skipNum = Number.parseInt(input);
+      return true;
+    } else if (input === "") return true;
+    else {
+      console.log("올바르지 않은 입력값입니다. 다시 입력해주세요.");
+      return false;
+    }
+  },
+  skipValidation: function(input) {
+    if (input.length === 1) {
+      const number = Number.parseInt(input);
+      return Number.isInteger(number) && number < 7;
+    } else {
+      return false;
+    }
   },
   update: function(action, player, inning, attackTeam, defenseTeam) {
     if (action === STRIKE) this.handleStrike(player, inning, defenseTeam);
@@ -270,7 +299,7 @@ const game = {
     this.showTopBoard(team1, team2);
     this.showMiddleBoard(team1, team2, inning);
     this.showBottomBoard(team1, team2);
-    console.log("\n" + this.logHistory);
+    if (inning.num > this.skipNum) console.log("\n" + this.logHistory);
   },
   showTopBoard: function(team1, team2) {
     const topBar = new Team("TEAM");
@@ -366,8 +395,10 @@ const game = {
     process.exit();
   },
   compareScore: function(team1, team2) {
-    team1.scores < team2.scores ? console.log(team2.teamName + "팀 승리!!")
-      : team1.scores > team2.scores ? console.log(team1.teamName + "팀 승리!!")
+    team1.scores < team2.scores
+      ? console.log(team2.teamName + "팀 승리!!")
+      : team1.scores > team2.scores
+      ? console.log(team1.teamName + "팀 승리!!")
       : console.log("무승부입니다.");
   }
 };
