@@ -47,6 +47,10 @@ class Team {
     this.pitches = 0;
     this.strikeouts = 0;
     this.hits = 0;
+    this.scoreHistory = Array.apply(null, new Array(12)).map(
+      Number.prototype.valueOf,
+      0
+    );
   }
   addLastBatter() {
     this.lastBatter < 8 ? this.lastBatter++ : (this.lastBatter = 0);
@@ -237,6 +241,7 @@ const game = {
       console.log(attackTeam.teamName + "팀 득점!!");
       inning.hits--;
       attackTeam.scores++;
+      attackTeam.scoreHistory[inning.num - 1]++;
     }
   },
   log(player, inning) {
