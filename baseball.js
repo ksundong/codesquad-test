@@ -43,9 +43,10 @@ const game = {
     if (this.balls === 4) this.update("hit");
   },
   handleOut: function() {
-    console.log("아웃! 다음 타자가 타석에 입장했습니다.");
-    this.changeBatter();
     this.outs++;
+    this.changeBatter();
+    const msg = this.outs === 3 ? "아웃!" : "아웃! 다음 타자가 타석에 입장했습니다.";
+    console.log(msg);
   },
   handleHit: function() {
     console.log("안타! 다음 타자가 타석에 입장했습니다.");
