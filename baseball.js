@@ -292,14 +292,9 @@ const game = {
     console.log(msg);
   },
   showMiddleBoard: function(team1, team2, inning) {
-    const msg =
-      "|     " +
-      team1.teamName +
-      "          " +
-      inning.showInfo() +
-      "             " +
-      team2.teamName +
-      "  |";
+    const msg = `|     ${
+      team1.teamName
+    }          ${inning.showInfo()}             ${team2.teamName}  |`;
     console.log(msg);
     this.showPlayerStatus(team1, team2, inning);
   },
