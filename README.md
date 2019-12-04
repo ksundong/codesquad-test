@@ -165,4 +165,6 @@
 
 1. 상수를 constants.js 파일로 분리하였습니다.
 
+2. Player 클래스를 player.js 파일로 분리하였습니다.
+
 ## Step 3
