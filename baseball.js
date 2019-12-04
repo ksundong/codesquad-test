@@ -9,6 +9,20 @@ const game = {
   checkTeams: function() {
     return this.firstTeam.check() && this.secondTeam.check();
   },
+  startMsg: function() {
+    const team1Name = this.firstTeam.teamName;
+    const team2Name = this.secondTeam.teamName;
+    const msg = `${team1Name} VS ${team2Name}의 시합을 시작합니다.`;
+    console.log(msg + "\n");
+  },
+  noDataMsg: function() {
+    console.log("데이터가 입력되지 않았습니다. 입력후에 다시 시도해주세요.\n");
+  },
+  compareScore: function(team1, team2) {
+    team1.scores < team2.scores ? console.log(team2.teamName + "팀 승리!!")
+        : team1.scores > team2.scores ? console.log(team1.teamName + "팀 승리!!")
+        : console.log("무승부입니다.");
+  },
   selectMenu: function(input) {
     if (input === "1") this.enterData();
     else if (input === "2") this.printData();
@@ -16,11 +30,9 @@ const game = {
     else console.log("올바른 값을 입력해주세요.\n");
   },
   enterData: function() {
-    const firstTeamName = this.enterTeamName(1);
-    this.firstTeam = new Team(firstTeamName);
+    this.firstTeam = new Team(this.enterTeamName(1));
     this.firstTeam.addPlayers();
-    const secondTeamName = this.enterTeamName(2);
-    this.secondTeam = new Team(secondTeamName);
+    this.secondTeam = new Team(this.enterTeamName(2));
     this.secondTeam.addPlayers();
     console.log("\n팀 데이터 입력이 완료되었습니다.\n");
   },
@@ -28,7 +40,7 @@ const game = {
     while (true) {
       const teamName = readlineSync.question(num + "팀의 이름을 입력하세요> ");
       if (teamName.length > 0) {
-        return teamName;
+        return new Team(teamName);
       } else {
         console.log("팀 이름을 입력해주세요.\n");
       }
@@ -37,9 +49,7 @@ const game = {
   printData: function() {
     if (this.checkTeams()) {
       this.firstTeam.showInfo();
-      console.log();
       this.secondTeam.showInfo();
-      console.log();
     } else {
       this.noDataMsg();
     }
@@ -55,17 +65,6 @@ const game = {
     } else {
       this.noDataMsg();
     }
-  },
-  startMsg: function() {
-    const msg =
-      this.firstTeam.teamName +
-      " VS " +
-      this.secondTeam.teamName +
-      "의 시합을 시작합니다.\n";
-    console.log(msg);
-  },
-  noDataMsg: function() {
-    console.log("데이터가 입력되지 않았습니다. 입력후에 다시 시도해주세요.\n");
   },
   playInning: function(num, state, attackTeam) {
     const inning = new Inning(num, state);
@@ -137,11 +136,6 @@ const game = {
     this.compareScore(team1, team2);
     console.log("Thank you!");
     process.exit();
-  },
-  compareScore: function(team1, team2) {
-    team1.scores < team2.scores ? console.log(team2.teamName + "팀 승리!!")
-      : team1.scores > team2.scores ? console.log(team1.teamName + "팀 승리!!")
-      : console.log("무승부입니다.");
   }
 };
 
