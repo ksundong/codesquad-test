@@ -169,4 +169,6 @@
 
 3. Team 클래스를 team.js 파일로 분리하였습니다.
 
+4. Inning 클래스를 inning.js 파일로 분리하였습니다.
+
 ## Step 3
