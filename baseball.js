@@ -1,11 +1,5 @@
 const readlineSync = require("readline-sync");
-
-const STRIKE = "strike";
-const BALL = "ball";
-const OUT = "out";
-const HIT = "hit";
-const TOP = "초";
-const BOTTOM = "말";
+const constants = require("./constants");
 
 class Player {
   constructor(order, name, batAvg) {
@@ -31,10 +25,10 @@ class Player {
     return this.order + "번 " + this.name;
   }
   bat(random) {
-    if (random <= this.outAvg) return OUT;
-    else if (random <= this.outAvg + this.strAvg) return STRIKE;
-    else if (random <= this.outAvg + this.strAvg + this.ballAvg) return BALL;
-    else return HIT;
+    if (random <= this.outAvg) return constants.OUT;
+    else if (random <= this.outAvg + this.strAvg) return constants.STRIKE;
+    else if (random <= this.outAvg + this.strAvg + this.ballAvg) return constants.BALL;
+    else return constants.HIT;
   }
 }
 
@@ -158,8 +152,8 @@ const game = {
     if (this.checkTeams()) {
       this.startMsg();
       for (let i = 1; i < 7; i++) {
-        this.playInning(i, TOP, this.firstTeam);
-        this.playInning(i, BOTTOM, this.secondTeam);
+        this.playInning(i, constants.TOP, this.firstTeam);
+        this.playInning(i, constants.BOTTOM, this.secondTeam);
       }
       this.over();
     } else {
@@ -199,23 +193,23 @@ const game = {
     player.out = false;
   },
   update: function(action, player, inning, team) {
-    if (action === STRIKE) this.handleStrike(player, inning);
-    else if (action === BALL) this.handleBall(player, inning, team);
-    else if (action === OUT) this.handleOut(player, inning);
-    else if (action === HIT) this.handleHit(player, inning, team);
+    if (action === constants.STRIKE) this.handleStrike(player, inning);
+    else if (action === constants.BALL) this.handleBall(player, inning, team);
+    else if (action === constants.OUT) this.handleOut(player, inning);
+    else if (action === constants.HIT) this.handleHit(player, inning, team);
   },
   handleStrike(player, inning) {
     console.log("스트라이크!");
     player.strikes++;
     if (player.strikes === 3) {
-      this.update(OUT, player, inning);
+      this.update(constants.OUT, player, inning);
     }
   },
   handleBall(player, inning, team) {
     console.log("볼!");
     player.balls++;
     if (player.balls === 4) {
-      this.update(HIT, player, inning, team);
+      this.update(constants.HIT, player, inning, team);
     }
   },
   handleOut(player, innning) {
