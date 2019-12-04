@@ -210,3 +210,5 @@
 5. Player 클래스를 player.js 파일로 이동하였습니다.
 
 6. Team 클래스를 team.js 파일로 이동하였습니다.
+
+7. Inning 클래스를 inning.js 파일로 이동하였습니다.

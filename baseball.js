@@ -1,18 +1,7 @@
 const constants = require("./constants");
 const Team = require("./team");
+const Inning = require("./inning");
 const readlineSync = require("readline-sync");
-
-class Inning {
-  constructor(num, state) {
-    this.num = num;
-    this.state = state; // TOP or BOTTOM
-    this.outs = 0;
-    this.hits = 0;
-  }
-  showInfo() {
-    return this.num + "회" + this.state + " ";
-  }
-}
 
 const game = {
   firstTeam: new Team(),
