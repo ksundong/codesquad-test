@@ -8,45 +8,60 @@ const game = {
   secondTeam: new Team(),
   logHistory: "",
   skipNum: 0,
-  checkTeams: function() {
+  printNoDataMsg() {
+    console.log("데이터가 입력되지 않았습니다. 입력후에 다시 시도해주세요.\n");
+  },
+  startMsg() {
+    const firstTeamName = this.firstTeam.teamName;
+    const secondTeamName = this.secondTeam.teamName;
+    const msg = `${firstTeamName} VS ${secondTeamName}의 시합을 시작합니다.`;
+    console.log(msg + "\n");
+  },
+  compareScoreMsg(team1, team2) {
+    team1.scores < team2.scores
+      ? console.log(team2.teamName + "팀 승리!!")
+      : team1.scores > team2.scores
+      ? console.log(team1.teamName + "팀 승리!!")
+      : console.log("무승부입니다.");
+  },
+  recordLog(msg) {
+    this.logHistory += "\n" + msg;
+  },
+  checkTeams() {
     return this.firstTeam.check() && this.secondTeam.check();
   },
-  selectMenu: function(input) {
+  selectMenu(input) {
     if (input === "1") this.enterData();
     else if (input === "2") this.printData();
     else if (input === "3") this.play();
     else console.log("올바른 값을 입력해주세요.\n");
   },
-  enterData: function() {
-    const firstTeamName = this.enterTeamName(1);
-    this.firstTeam = new Team(firstTeamName);
+  enterData() {
+    this.firstTeam = this.enterTeamName(1);
     this.firstTeam.addPlayers();
-    const secondTeamName = this.enterTeamName(2);
-    this.secondTeam = new Team(secondTeamName);
+    this.secondTeam = this.enterTeamName(2);
     this.secondTeam.addPlayers();
     console.log("\n팀 데이터 입력이 완료되었습니다.\n");
   },
-  enterTeamName: function(num) {
+  enterTeamName(num) {
     while (true) {
       const teamName = readlineSync.question(num + "팀의 이름을 입력하세요> ");
       if (teamName.length > 0) {
-        return teamName;
+        return new Team(teamName);
       } else {
         console.log("팀 이름을 입력해주세요.\n");
       }
     }
   },
-  printData: function() {
+  printData() {
     if (this.checkTeams()) {
       this.firstTeam.showInfo();
-      console.log();
       this.secondTeam.showInfo();
-      console.log();
     } else {
-      this.noDataMsg();
+      this.printNoDataMsg();
     }
   },
-  play: function() {
+  play() {
     const team1 = this.firstTeam;
     const team2 = this.secondTeam;
     if (this.checkTeams()) {
@@ -58,72 +73,59 @@ const game = {
       }
       this.over();
     } else {
-      this.noDataMsg();
+      this.printNoDataMsg();
     }
   },
-  startMsg: function() {
-    const msg =
-      this.firstTeam.teamName +
-      " VS " +
-      this.secondTeam.teamName +
-      "의 시합을 시작합니다.\n";
-    console.log(msg);
-  },
-  noDataMsg: function() {
-    console.log("데이터가 입력되지 않았습니다. 입력후에 다시 시도해주세요.\n");
-  },
-  recordLog: function(msg) {
-    this.logHistory += "\n" + msg;
-  },
-  playInning: function(num, state, attackTeam, defenseTeam) {
+  playInning(num, state, attackTeam, defenseTeam) {
     const inning = new Inning(num, state);
     this.logHistory = "";
-    this.recordLog(inning.showInfo() + attackTeam.teamName + " 공격\n");
     attackTeam.isAttackTeam = true;
     defenseTeam.isAttackTeam = false;
+    this.recordLog(inning.showInfo() + attackTeam.teamName + " 공격\n");
     while (true) {
       for (let i = attackTeam.lastBatter; i < attackTeam.players.length; i++) {
         const player = attackTeam.players[i];
         this.playBatting(player, inning, attackTeam, defenseTeam);
-        attackTeam.addLastBatter();
         if (inning.outs === 3) return;
       }
     }
   },
-  playBatting: function(player, inning, attackTeam, defenseTeam) {
+  playBatting(player, inning, attackTeam, defenseTeam) {
     this.recordLog(player.showInfo());
     while (!player.out) {
       defenseTeam.pitches++;
       const action = player.bat(Math.random());
       this.update(action, player, inning, attackTeam, defenseTeam);
-      this.log(player, inning);
+      this.logCount(player, inning);
       this.showScoreBoard(inning);
       this.skipInning(inning);
     }
     this.logHistory = "";
     player.out = false;
+    attackTeam.addLastBatter();
   },
-  skipInning: function(inning) {
+  skipInning(inning) {
     if (inning.num <= this.skipNum) return;
     const question =
       "다음 투구 보기(enter) or 스킵하고 X회말 후 투구보기(숫자+enter) ? ";
     while (true) {
       const input = readlineSync.question(question);
-      if (this.inputChecking(input)) break;
+      if (this.checkSkipInput(input)) break;
     }
   },
-  inputChecking: function(input) {
-    const check = this.skipValidation(input);
+  checkSkipInput(input) {
+    const check = this.validateSkipInput(input);
     if (check) {
       this.skipNum = Number.parseInt(input);
       return true;
-    } else if (input === "") return true;
-    else {
+    } else if (input === "") {
+      return true;
+    } else {
       console.log("올바르지 않은 입력값입니다. 다시 입력해주세요.");
       return false;
     }
   },
-  skipValidation: function(input) {
+  validateSkipInput(input) {
     if (input.length === 1) {
       const number = Number.parseInt(input);
       return Number.isInteger(number) && number < 7;
@@ -131,7 +133,7 @@ const game = {
       return false;
     }
   },
-  update: function(action, player, inning, attackTeam, defenseTeam) {
+  update(action, player, inning, attackTeam, defenseTeam) {
     if (action === constants.STRIKE)
       this.handleStrike(player, inning, defenseTeam);
     else if (action === constants.BALL)
@@ -172,12 +174,12 @@ const game = {
       attackTeam.scoreHistory[inning.num - 1]++;
     }
   },
-  log(player, inning) {
+  logCount(player, inning) {
     this.recordLog(
       player.strikes + "S " + player.balls + "B " + inning.outs + "O\n"
     );
   },
-  showScoreBoard: function(inning) {
+  showScoreBoard(inning) {
     const team1 = this.firstTeam;
     const team2 = this.secondTeam;
     console.clear();
@@ -186,7 +188,7 @@ const game = {
     this.showBottomBoard(team1, team2);
     if (inning.num > this.skipNum) console.log("\n" + this.logHistory);
   },
-  showTopBoard: function(team1, team2) {
+  showTopBoard(team1, team2) {
     const topBar = new Team("TEAM");
     topBar.scoreHistory = [1, 2, 3, 4, 5, 6];
     topBar.scores = "TOT";
@@ -196,7 +198,7 @@ const game = {
     this.showScoreInfo(team2);
     console.log("|                                            |");
   },
-  showScoreInfo: function(team) {
+  showScoreInfo(team) {
     const h = team.scoreHistory;
     const totScr = team.scores !== "TOT" ? ` ${team.scores} ` : team.scores;
     let msg = "| " + team.teamName + "  ";
@@ -206,14 +208,14 @@ const game = {
     msg += "               |   " + totScr + "   |";
     console.log(msg);
   },
-  showMiddleBoard: function(team1, team2, inning) {
+  showMiddleBoard(team1, team2, inning) {
     const msg = `|     ${
       team1.teamName
     }          ${inning.showInfo()}             ${team2.teamName}  |`;
     console.log(msg);
     this.showPlayerStatus(team1, team2, inning);
   },
-  showPlayerStatus: function(team1, team2, inning) {
+  showPlayerStatus(team1, team2, inning) {
     const attackTeam = team1.isAttackTeam ? team1 : team2;
     const attackTeamBatter = attackTeam.players[attackTeam.lastBatter];
     for (let i = 0; i < team1.players.length; i++) {
@@ -228,10 +230,10 @@ const game = {
       console.log(msg);
     }
   },
-  displayBatter: function(team, num) {
+  displayBatter(team, num) {
     return team.isAttackTeam && num === team.lastBatter ? "V" : " ";
   },
-  showGameCount: function(num, inning, attackTeamBatter) {
+  showGameCount(num, inning, attackTeamBatter) {
     if (num === 2) {
       if (attackTeamBatter.strikes === 0) return "     S             ";
       else if (attackTeamBatter.strikes === 1) return "     S X           ";
@@ -248,14 +250,14 @@ const game = {
       else if (inning.outs === 3) return "     O X X X       ";
     } else return "                   ";
   },
-  showBottomBoard: function(team1, team2) {
+  showBottomBoard(team1, team2) {
     console.log("|                                            |");
     this.makeBottomMsg("투구", team1.pitches, team2.pitches);
     this.makeBottomMsg("삼진", team1.strikeouts, team2.strikeouts);
     this.makeBottomMsg("안타", team1.hits, team2.hits);
     console.log("+--------------------------------------------+");
   },
-  makeBottomMsg: function(msg1, msg2, msg3) {
+  makeBottomMsg(msg1, msg2, msg3) {
     let msg = "| ";
     msg +=
       this.concatMsg(msg1, msg2) +
@@ -264,27 +266,20 @@ const game = {
       " |";
     console.log(msg);
   },
-  concatMsg: function(msg1, msg2) {
+  concatMsg(msg1, msg2) {
     if ((msg2 + "").length < 2) msg2 += "  ";
     else if ((msg2 + "").length < 3) msg2 += " ";
     return msg1 + ": " + msg2;
   },
-  over: function() {
+  over() {
     const team1 = this.firstTeam;
     const team2 = this.secondTeam;
     console.log("경기 종료\n");
     console.log(team1.teamName + " VS " + team2.teamName);
     console.log(team1.scores + " : " + team2.scores);
-    this.compareScore(team1, team2);
+    this.compareScoreMsg(team1, team2);
     console.log("Thank you!");
     process.exit();
-  },
-  compareScore: function(team1, team2) {
-    team1.scores < team2.scores
-      ? console.log(team2.teamName + "팀 승리!!")
-      : team1.scores > team2.scores
-      ? console.log(team1.teamName + "팀 승리!!")
-      : console.log("무승부입니다.");
   }
 };
 

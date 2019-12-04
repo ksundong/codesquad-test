@@ -69,6 +69,7 @@ class Team {
       const player = this.players[i];
       console.log(player.order + "번 " + player.name + ", " + player.batAvg);
     }
+    console.log();
   }
 }
 
