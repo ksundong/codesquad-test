@@ -270,10 +270,10 @@ const game = {
       this.update(HIT, player, inning, attackTeam);
     }
   },
-  handleOut(player, innning) {
+  handleOut(player, inning) {
     this.recordLog("아웃!");
     player.changeBatter();
-    innning.outs++;
+    inning.outs++;
   },
   handleHit(player, inning, attackTeam) {
     this.recordLog("안타!");
